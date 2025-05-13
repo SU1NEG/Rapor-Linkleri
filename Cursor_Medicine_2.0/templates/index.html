@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Care Center</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Select2 CSS ve JS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>❤️</text></svg>">
+    <style>
+        :root {
+            --primary: #1a73e8;      /* Ana mavi renk - daha kurumsal */
+            --secondary: #4285f4;    /* İkincil mavi */
+            --success: #34a853;      /* Google yeşili - daha profesyonel */
+            --danger: #ea4335;       /* Yumuşak kırmızı */
+            --warning: #fbbc05;      /* Soft sarı */
+            --info: #0acffe;         /* Açık mavi */
+            --dark: #202124;         /* Koyu gri */
+            --light: #f8f9fa;        /* Açık arka plan */
+            --white: #ffffff;
+            --border: #e8eaed;       /* Border rengi */
+            --shadow: rgba(60, 64, 67, 0.1);  /* Gölge rengi */
+        }
+
+        
+
+        body {
+            background-color: var(--light);
+        }
+
+        /* Header Styles */
+        .header {
+            background: linear-gradient(135deg, #1a73e8, #4285f4);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: white;
+            text-decoration: none;
+        }
+
+        .logo i {
+            font-size: 1.5rem;
+        }
+        .logo span {
+    font-weight: 500;
+    font-size: 1.2rem;
+    letter-spacing: 0.5px;
+}
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .search-box input {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 25px;
+            outline: none;
+        }
+
+        .search-box button {
+            background: #5c6bc0;
+            color: white;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 6px rgba(92, 107, 192, 0.2);
+        }
+
+        .search-box button:hover {
+            background: #3f51b5;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(92, 107, 192, 0.3);
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .main-title {
+            text-align: center;
+            color: var(--dark);
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+        }
+
+        .symptom-box {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 2px 6px var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .symptom-label {
+            font-size: 1.1rem;
+            color: var(--dark);
+            margin-bottom: 1rem;
+        }
+
+        .selected-symptoms {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .symptom-tag {
+            background: var(--primary);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .remove-symptom {
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .symptom-input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .symptom-input:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .speech-btn {
+            background: #5c6bc0;  /* Soft indigo */
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 6px rgba(92, 107, 192, 0.2);
+        }
+
+        .speech-btn:hover {
+            background: #3f51b5;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(92, 107, 192, 0.3);
+        }
+
+        .predict-btn {
+            background: #2196f3;  /* Material Blue */
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 500;
+            flex: 1;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 6px rgba(33, 150, 243, 0.2);
+        }
+
+        .predict-btn:hover {
+            background: #1976d2;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+        }
+
+        /* Results Section */
+        .results-title {
+            text-align: center;
+            color: var(--dark);
+            margin: 3rem 0 2rem;
+            font-size: 2rem;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .result-card {
+            background: white;
+            padding: 1.8rem;
+            border-radius: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px var(--shadow);
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .result-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .result-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .result-card span {
+            color: white;
+            font-weight: 600;
+            font-size: 1.2rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            letter-spacing: 0.5px;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(44, 62, 80, 0.85);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            max-width: 600px;
+            width: 90%;
+            position: relative;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: none;
+        }
+
+        .modal-body {
+            margin-top: 1rem;
+        }
+
+        .modal-body h3 {
+            color: #2c3e50;  /* Koyu lacivert */
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        .modal-body div {
+            color: #34495e !important;  /* Koyu gri */
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+
+        .modal-body ul li {
+            color: #34495e !important;  /* Koyu gri */
+            margin: 0.8rem 0;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            cursor: pointer;
+            font-size: 2rem;
+            color: #34495e;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+
+        .close-modal:hover {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+
+            .search-box input {
+                flex: 1;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+        }
+
+        /* Select2 özelleştirmeleri */
+        .select2-container {
+            width: 100% !important;
+            margin-bottom: 1rem;
+        }
+        
+        .select2-container--default .select2-selection--multiple {
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            padding: 8px 12px;
+            min-height: 60px;
+            box-shadow: 0 2px 5px var(--shadow);
+        }
+        
+        .select2-container--default .select2-selection--multiple .select2-search__field {
+            height: 38px;
+            margin-top: 0;
+            padding: 8px 0;
+            font-size: 1rem;
+        }
+        
+        .select2-container--default.select2-container--focus .select2-selection--multiple {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.1);
+        }
+        
+        .select2-container--default .select2-selection--multiple .select2-selection__choice {
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 6px 12px;
+            margin: 4px;
+            font-size: 0.9rem;
+        }
+        
+        .select2-container--default .select2-selection__choice__remove {
+            color: white;
+            margin-right: 8px;
+            border: none;
+            font-size: 1.1rem;
+            padding: 0 4px;
+        }
+        
+        .select2-container--default .select2-selection__choice__remove:hover {
+            background: transparent;
+            color: #ffcdd2;
+        }
+        
+        .select2-dropdown {
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-top: 4px;
+        }
+        
+        .select2-search__field {
+            padding: 8px 12px !important;
+            font-size: 1rem !important;
+        }
+        
+        .select2-results__option {
+            padding: 10px 12px !important;
+            font-size: 0.95rem;
+        }
+        
+        .select2-results__option--highlighted {
+            background-color: var(--primary) !important;
+        }
+
+        /* Sonuç kartları için sağlık teması renkleri */
+        .result-card.disease { 
+            background: linear-gradient(135deg, #0396FF, #0D47A1);  /* Hastane mavisi */
+        }
+
+        .result-card.description { 
+            background: linear-gradient(135deg, #42B883, #347474);  /* Medikal yeşil */
+        }
+
+        .result-card.precaution { 
+            background: linear-gradient(135deg, #4776E6, #1CB5E0);  /* Güvenilir mavi */
+        }
+
+        .result-card.medications { 
+            background: linear-gradient(135deg, #FF5858, #CC2E2E);  /* İlaç kırmızısı */
+        }
+
+        .result-card.workouts { 
+            background: linear-gradient(135deg, #00B4DB, #006C9C);  /* Terapi mavisi */
+        }
+
+        .result-card.diets { 
+            background: linear-gradient(135deg, #56AB2F, #45A247);  /* Sağlıklı beslenme yeşili */
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <nav class="nav">
+            <a href="/" class="logo">
+                <i class="fas fa-heartbeat"></i>
+                <span>Health Center</span>
+            </a>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="/about">About</a>
+                <a href="/contact">Contact</a>
+                <a href="/developer">Developer</a>
+                <a href="/blog">Blog</a>
+            </div>
+            <div class="search-box">
+                <input type="text" placeholder="Search...">
+                <button>Search</button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        <h1 class="main-title">Health Care Center</h1>
+        
+        <div class="symptom-box">
+            <form action="/predict" method="post">
+                <label class="symptom-label">Select Symptoms:</label>
+                <select class="symptom-select" name="text" multiple="multiple">
+                    {% for symptom in symptoms_dict.keys() %}
+                    <option value="{{ symptom }}">{{ symptom|replace('_', ' ')|title }}</option>
+                    {% endfor %}
+                </select>
+                
+                <div class="button-group">
+                    <button type="submit" class="predict-btn">Predict</button>
+                </div>
+            </form>
+        </div>
+
+        {% if prediction %}
+        <h2 class="results-title">Our AI System Results</h2>
+        <div class="results-grid">
+            <div class="result-card disease" onclick="showResult('Disease', '{{prediction.disease}}')">
+                <span>Disease</span>
+            </div>
+            <div class="result-card description" onclick="showResult('Description', '{{prediction.description}}')">
+                <span>Description</span>
+            </div>
+            <div class="result-card precaution" onclick="showResult('Precaution', '{{prediction.precaution}}')">
+                <span>Precaution</span>
+            </div>
+            <div class="result-card medications" onclick="showResult('Medications', '{{prediction.medications}}')">
+                <span>Medications</span>
+            </div>
+            <div class="result-card workouts" onclick="showResult('Workouts', '{{prediction.workout}}')">
+                <span>Workouts</span>
+            </div>
+            <div class="result-card diets" onclick="showResult('Diets', '{{prediction.diet}}')">
+                <span>Diets</span>
+            </div>
+        </div>
+        {% endif %}
+    </main>
+
+    <div class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-body"></div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $('.symptom-select').select2({
+                placeholder: "Type or select symptoms...",
+                allowClear: true,
+                tags: false,
+                tokenSeparators: [','],
+                theme: "default",
+                maximumSelectionLength: 5, // Maximum 5 semptom seçilebilir
+                language: {
+                    maximumSelected: function (e) {
+                        return "You can select maximum " + e.maximum + " symptoms";
+                    }
+                }
+            });
+            
+            // Speech recognition için
+            function startDictation() {
+                if (window.hasOwnProperty('webkitSpeechRecognition')) {
+                    var recognition = new webkitSpeechRecognition();
+                    recognition.continuous = false;
+                    recognition.interimResults = false;
+                    recognition.lang = "en-US";
+                    recognition.start();
+                    recognition.onresult = function(e) {
+                        const transcript = e.results[0][0].transcript;
+                        const symptoms = transcript.split(',').map(s => s.trim());
+                        
+                        symptoms.forEach(symptom => {
+                            const option = new Option(symptom, symptom, true, true);
+                            $('.symptom-select').append(option).trigger('change');
+                        });
+                        
+                        recognition.stop();
+                    };
+                    recognition.onerror = function(e) {
+                        recognition.stop();
+                    }
+                }
+            }
+        });
+
+        function showResult(title, content) {
+            const modal = document.querySelector('.modal');
+            const modalBody = document.querySelector('.modal-body');
+            
+            // Başlığı formatlı göster
+            const formattedTitle = `<h3 style="color: var(--dark); margin-bottom: 1rem;">${title}</h3>`;
+            
+            // İçeriği formatlı göster
+            let formattedContent = content;
+            if (content) {
+                // Köşeli parantezleri ve tırnakları kaldır
+                formattedContent = content.replace(/[\[\]'"]/g, '');
+                
+                // Virgülle ayrılmış maddeleri liste haline getir
+                if (formattedContent.includes(',')) {
+                    const items = formattedContent.split(',').map(item => item.trim());
+                    formattedContent = '<ul style="list-style-type: disc; margin-left: 1.5rem;">' +
+                        items.map(item => `<li style="margin: 0.5rem 0;">${item}</li>`).join('') +
+                        '</ul>';
+                }
+            }
+            
+            modalBody.innerHTML = `
+                ${formattedTitle}
+                <div style="color: var(--dark); line-height: 1.6;">
+                    ${formattedContent || 'No information available'}
+                </div>
+            `;
+            
+            modal.style.display = 'flex';
+        }
+
+        const closeModal = document.querySelector('.close-modal');
+        const modal = document.querySelector('.modal');
+
+        closeModal.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            fetch('/predict', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(html => {
+                // Sadece sonuçlar kısmını güncelle
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const newResults = doc.querySelector('.results-grid');
+                const currentResults = document.querySelector('.results-grid');
+                
+                if (newResults) {
+                    if (currentResults) {
+                        currentResults.replaceWith(newResults);
+                    } else {
+                        document.querySelector('.container').appendChild(newResults);
+                    }
+                    document.querySelector('.results-title').style.display = 'block';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+
+</html>
